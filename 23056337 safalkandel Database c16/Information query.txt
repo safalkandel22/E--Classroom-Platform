@@ -1,0 +1,37 @@
+
+Query
+
+1)SELECT p.Program_name, COUNT(s.Student_id) AS Total_Students
+FROM Program p
+LEFT JOIN Student s ON p.Program_id = s.Program_id
+GROUP BY p.Program_name;
+
+2)SELECT a.Announcement_Title, a.Announcement_Date, a.Announcement_Description
+FROM Announcement_New a
+JOIN Student_Announcement sa ON a.Announcement_Id = sa.Announcement_Id
+WHERE sa.Module_id = <Module_Id>
+AND a.Announcement_Date BETWEEN TO_DATE('2024-05-01', 'YYYY-MM-DD') AND TO_DATE('2024-05-28', 'YYYY-MM-DD');
+
+3)SELECT m.Module_Name, COUNT(r.Resource_id) AS Total_Resources
+FROM Module m
+LEFT JOIN Student_Module_Resource smr ON m.Module_id = smr.Module_id
+LEFT JOIN Resource_Table r ON smr.Resource_id = r.Resource_id
+WHERE m.Module_Name LIKE 'C%'
+GROUP BY m.Module_Name;
+
+
+
+4)SELECT s.Student_Name, p.Program_name
+FROM Student s
+JOIN Program p ON s.Program_id = p.Program_id
+WHERE s.Student_id NOT IN (
+    SELECT sma.Student_id
+    FROM Student_Module_Assessment sma
+    WHERE sma.Module_id = 3
+);
+
+5)SELECT t.Teacher_Name
+FROM Teacher t
+JOIN Student_Module_Teacher smt ON t.Teacher_Id = smt.Teacher_id
+GROUP BY t.Teacher_Name
+HAVING COUNT(DISTINCT smt.Module_id) > 1;

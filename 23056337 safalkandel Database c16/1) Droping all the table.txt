@@ -1,0 +1,14 @@
+1) Droping all the table
+DROP TABLE Student_Announcement;
+DROP TABLE Student_Module_Teacher;
+DROP TABLE Student_Module_Assessment;
+DROP TABLE Result;
+DROP TABLE Assessment;
+DROP TABLE Student_Module_Resource;
+DROP TABLE Resource_Table;
+DROP TABLE Student_Module;
+DROP TABLE Module;
+DROP TABLE Student;
+DROP TABLE Teacher;
+DROP TABLE Program;
+DROP TABLE Announcement_New;

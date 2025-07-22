@@ -1,0 +1,61 @@
+Transation query
+
+1)SELECT 
+    M.Module_Name, 
+    A.Assessment_Deadline
+FROM 
+    Module M
+INNER JOIN 
+    Student_Module_Assessment SMA ON M.Module_id = SMA.Module_id
+INNER JOIN 
+    Assessment A ON SMA.Assessment_id = A.Assessment_id
+WHERE 
+    A.Assessment_Deadline = (SELECT MAX(Assessment_Deadline) FROM Assessment);
+
+2)SELECT * FROM (
+    SELECT s.Student_Name, SUM(r.Result_Total_Marks) AS Total_Score
+    FROM Student s
+    JOIN Student_Module_Assessment sma ON s.Student_id = sma.Student_id
+    JOIN Result r ON sma.Result_id = r.Result_id
+    GROUP BY s.Student_Name
+    ORDER BY Total_Score DESC
+)
+WHERE ROWNUM <= 3;
+
+
+3)SELECT p.Program_name, COUNT(a.Assessment_id) AS Total_Assessments, AVG(r.Result_Total_Marks) AS Average_Score
+FROM Program p
+JOIN Student s ON p.Program_id = s.Program_id
+JOIN Student_Module_Assessment sma ON s.Student_id = sma.Student_id
+JOIN Assessment a ON sma.Assessment_id = a.Assessment_id
+JOIN Result r ON sma.Result_id = r.Result_id
+GROUP BY p.Program_name;
+
+4)SELECT s.Student_Name
+FROM Student s
+JOIN Student_Module_Assessment sma ON s.Student_id = sma.Student_id
+JOIN Module m ON sma.Module_id = m.Module_id
+JOIN Result r ON sma.Result_id = r.Result_id
+WHERE m.Module_Name = 'Databases'
+AND r.Result_Total_Marks > (
+    SELECT AVG(r1.Result_Total_Marks)
+    FROM Student_Module_Assessment sma1
+    JOIN Result r1 ON sma1.Result_id = r1.Result_id
+    JOIN Module m1 ON sma1.Module_id = m1.Module_id
+    WHERE m1.Module_Name = 'Databases'
+);
+
+5)SELECT 
+    S.Student_Name, 
+    CASE 
+        WHEN R.Result_Total_Marks >= 40 THEN 'Pass' 
+        ELSE 'Fail' 
+    END AS Remarks
+FROM 
+    Student S
+JOIN 
+    Student_Module_Assessment SMA ON S.Student_id = SMA.Student_id
+JOIN 
+    Result R ON SMA.Result_id = R.Result_id
+WHERE 
+    SMA.Module_id = 5;

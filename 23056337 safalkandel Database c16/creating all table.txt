@@ -1,0 +1,127 @@
+Creating all the table
+
+1)
+CREATE TABLE Program (
+    Program_id NUMBER(5) NOT NULL,
+    Program_name CHAR(100) NOT NULL,
+    Program_duration NUMBER(3) NOT NULL,
+    Program_Title CHAR(100),
+    CONSTRAINT Program_pk PRIMARY KEY (Program_id)
+);
+
+2)CREATE TABLE Student (
+    Student_id NUMBER(10) NOT NULL,
+    Program_id NUMBER(5) NOT NULL,
+    Student_Name CHAR(50) NOT NULL,
+    Student_Email VARCHAR2(100) NOT NULL UNIQUE,
+    Student_Address CHAR(100),
+    CONSTRAINT Student_pk PRIMARY KEY (Student_id),
+    CONSTRAINT Program_fk FOREIGN KEY (Program_id) REFERENCES Program(Program_id)
+);
+
+3)CREATE TABLE Module (
+    Module_id NUMBER(10) NOT NULL,
+    Module_Name CHAR(10) NOT NULL,
+    Credits NUMBER(5) NOT NULL,
+    CONSTRAINT Module_pk PRIMARY KEY (Module_id)
+);
+
+4)CREATE TABLE Student_Module (
+    Student_id NUMBER(10) NOT NULL,
+    Module_id NUMBER(10) NOT NULL,
+    CONSTRAINT Student_Module_pk PRIMARY KEY (Student_id, Module_id),
+    CONSTRAINT Student_fk FOREIGN KEY (Student_id) REFERENCES Student(Student_id),
+    CONSTRAINT Module_fk FOREIGN KEY (Module_id) REFERENCES Module(Module_id)
+);
+
+
+5)CREATE TABLE Resource_Table (
+    Resource_id NUMBER(10) NOT NULL,
+    Resource_title CHAR(150) NOT NULL,
+    Resource_type CHAR(50) NOT NULL,
+    CONSTRAINT Resource_pk PRIMARY KEY (Resource_id)
+);
+
+6)CREATE TABLE Student_Module_Resource (
+    Student_id NUMBER(10) NOT NULL,
+    Module_id NUMBER(10) NOT NULL,
+    Resource_Status CHAR(50) NOT NULL,
+    Resource_id NUMBER(10) NOT NULL,
+    CONSTRAINT SMR_pk PRIMARY KEY (Student_id, Module_id, Resource_id),
+    CONSTRAINT SMR_Student_fk FOREIGN KEY (Student_id) REFERENCES Student(Student_id),
+    CONSTRAINT SMR_Module_fk FOREIGN KEY (Module_id) REFERENCES Module(Module_id),
+    CONSTRAINT SMR_Resource_fk FOREIGN KEY (Resource_id) REFERENCES Resource_Table(Resource_id)
+);
+
+7)CREATE TABLE Assessment (
+    Assessment_id NUMBER(10) NOT NULL,
+    Assessment_title CHAR(150) NOT NULL,
+    Assessment_deadline DATE NOT NULL,
+    Weightage NUMBER(3) NOT NULL,
+    CONSTRAINT Assessment_pk PRIMARY KEY (Assessment_id)
+);
+
+8)CREATE TABLE Result (
+    Result_id NUMBER(10) NOT NULL,
+    Result_Total_Marks NUMBER(5) NOT NULL,
+    Result_Remark CHAR(100),
+    CONSTRAINT Result_pk PRIMARY KEY (Result_id)
+);
+
+9)CREATE TABLE Student_Module_Assessment (
+    Student_id NUMBER(10) NOT NULL,
+    Module_id NUMBER(10) NOT NULL,
+    Assessment_id NUMBER(10) NOT NULL,
+    Result_id NUMBER(10) NOT NULL,
+    CONSTRAINT SMA_pk PRIMARY KEY (Student_id, Module_id, Assessment_id),
+    CONSTRAINT SMA_Student_fk FOREIGN KEY (Student_id) REFERENCES Student(Student_id),
+    CONSTRAINT SMA_Module_fk FOREIGN KEY (Module_id) REFERENCES Module(Module_id),
+    CONSTRAINT SMA_Assessment_fk FOREIGN KEY (Assessment_id) REFERENCES Assessment(Assessment_id),
+    CONSTRAINT SMA_Result_fk FOREIGN KEY (Result_id) REFERENCES Result(Result_id)
+);
+
+
+10)CREATE TABLE Teacher (
+    Teacher_Id NUMBER(10) NOT NULL,
+    Teacher_Name CHAR(100) NOT NULL,
+    Teacher_Email CHAR(100) UNIQUE NOT NULL,
+    CONSTRAINT Teacher_pk PRIMARY KEY (Teacher_Id)
+);
+
+11)CREATE TABLE Student_Module_Teacher (
+    Student_id NUMBER(10) NOT NULL,
+    Module_id NUMBER(10) NOT NULL,
+    Teacher_id NUMBER(10) NOT NULL,
+    CONSTRAINT SMT_pk PRIMARY KEY (Student_id, Module_id, Teacher_id),
+    CONSTRAINT SMT_Student_fk FOREIGN KEY (Student_id) REFERENCES Student(Student_id),
+    CONSTRAINT SMT_Module_fk FOREIGN KEY (Module_id) REFERENCES Module(Module_id),
+    CONSTRAINT SMT_Teacher_fk FOREIGN KEY (Teacher_id) REFERENCES Teacher(Teacher_Id)
+);
+
+
+12)CREATE TABLE Announcement_New (
+    Announcement_Id NUMBER(10) NOT NULL,
+    Announcement_Title CHAR(150) NOT NULL,
+    Announcement_Date DATE NOT NULL,
+    Announcement_Description CHAR(255),
+    CONSTRAINT Announcement_New_pk PRIMARY KEY (Announcement_Id)
+);
+
+
+13)CREATE TABLE Student_Announcement (
+    Student_id NUMBER(10) NOT NULL,
+    Module_id NUMBER(10) NOT NULL,
+    Teacher_id NUMBER(10) NOT NULL,
+    Announcement_Id NUMBER(10) NOT NULL,
+    CONSTRAINT SA_pk PRIMARY KEY (Student_id, Module_id, Teacher_id, Announcement_Id),
+    CONSTRAINT SA_Student_fk FOREIGN KEY (Student_id) REFERENCES Student(Student_id),
+    CONSTRAINT SA_Module_fk FOREIGN KEY (Module_id) REFERENCES Module(Module_id),
+    CONSTRAINT SA_Teacher_fk FOREIGN KEY (Teacher_id) REFERENCES Teacher(Teacher_Id),
+    CONSTRAINT SA_Announcement_fk FOREIGN KEY (Announcement_Id) REFERENCES Announcement_New(Announcement_Id)
+);
+
+
+
+
+
+
